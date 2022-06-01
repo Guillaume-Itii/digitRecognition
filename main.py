@@ -3,9 +3,17 @@ import numpy as np
 from math import pow
 import matplotlib.pyplot as plt
 import matplotlib
-from skimage import data
+from io import StringIO
 
 matplotlib.rcParams["font.size"] = 18
+
+def loadDigitTab():
+    digitList = []
+    for i in range(0,10):
+        digitList.append(np.loadtxt('./digitDB/'+str(i)+'.txt',delimiter=','))
+    # print(digitList)
+    return digitList
+
 
 def imgToTxt(img, file):
     destination = open(file + ".txt", "w")
@@ -53,6 +61,7 @@ def getDigit(img):
 
 
 def resize(digit):
+
     C = np.array([[0, 0, 0, 0, 0, 0, 0],  # 2
                   [0, 255, 255, 255, 255, 255, 0],
                   [0, 0, 0, 0, 0, 255, 0],
@@ -81,6 +90,7 @@ def resize(digit):
                                        1 + int(j / yScale)]
     return newImage
 
+loadDigitTab()
 
 img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
 digit_found = getDigit(img)
