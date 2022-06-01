@@ -53,6 +53,7 @@ def flipImage(img,side="horizontal"):
         return np.flip(img,1)
 def intToImage(n):
     numberList = img2gray(io.imread('number.jpg'))
+    spaces = 1
     print(numberList.shape)
     if n == 0:
         return numberList[:,:135]
