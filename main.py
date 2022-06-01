@@ -11,7 +11,7 @@ def loadDigitTab():
     digitList = []
     for i in range(0,10):
         digitList.append(np.loadtxt('./digitDB/'+str(i)+'.txt',delimiter=','))
-    # print(digitList)
+    print(digitList)
     return digitList
 
 
@@ -61,7 +61,7 @@ def getDigit(img):
 
 
 def resize(digit):
-
+    # digit_list = loadDigitTab()
     C = np.array([[0, 0, 0, 0, 0, 0, 0],  # 2
                   [0, 255, 255, 255, 255, 255, 0],
                   [0, 0, 0, 0, 0, 255, 0],
