@@ -1,7 +1,11 @@
 from skimage import io
 import numpy as np
 from math import pow
+import matplotlib.pyplot as plt
+import matplotlib
+from skimage import data
 
+matplotlib.rcParams["font.size"] = 18
 
 def imgToTxt(img, file):
     destination = open(file + ".txt", "w")
@@ -30,6 +34,23 @@ def filter(img, n):
                     m += img[x, y]
             img[k, i] = m / pow(2 * n + 1, 2)
     return img
+
+
+def getDigit(img):
+    x_coord = 0
+    y_coord = 0
+
+    for y in range(0, len(img)):
+        for x in range(0, len(img)):
+            if img.item(y, x) == 255:
+                if x_coord == 0 and y_coord == 0:
+                    x_coord = x
+                    y_coord = y
+
+    digit = img[y_coord - 2:y_coord + 110, x_coord - 20:x_coord + 50]
+
+    return digit
+
 
 def resize(digit):
     C = np.array([[0, 0, 0, 0, 0, 0, 0],  # 2
@@ -62,41 +83,19 @@ def resize(digit):
 
 
 img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+digit_found = getDigit(img)
+digit_created = resize(digit_found)[:, :, 0]
 
-# imgToTxt(img,"test")
-# print(img.shape)
-# print(img)
-
-x_coord = 0
-y_coord = 0
-
-for y in range(0, len(img)):
-    for x in range(0, len(img)):
-        if img.item(y, x) == 255:
-            if x_coord == 0 and y_coord == 0:
-                x_coord = x
-                y_coord = y
-
-# print("first x : " + str(x_coord))
-# print("first y : " + str(y_coord))
-
-digit = img[y_coord -2 :y_coord + 110, x_coord -20:x_coord + 50]
-reshaped = resize(digit)[:, :, 0]
-
-print(reshaped.shape)
-
-
-error = np.mean( digit != reshaped )
-precent = (1 - error)*100
+error = np.mean(digit_found != digit_created)
+precent = (1 - error) * 100
 
 print("error : " + str(error))
 print("right % : " + str(precent))
 
-io.imshow(img, cmap='gray')
-io.show()
-io.imshow(digit, cmap='gray')
-io.show()
-io.imshow(reshaped, cmap='gray')
-io.show()
+fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+ax = axes.ravel()
+ax[0].imshow(digit_found)
+ax[1].imshow(digit_created)
 
-# determining the length of original image
+fig.tight_layout()
+plt.show()
