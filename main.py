@@ -52,5 +52,7 @@ digit = img[y_coord-10:y_coord+110,x_coord-25:x_coord+50]
 
 print(digit)
 
+io.imshow(img, cmap='gray')
+io.show()
 io.imshow(digit, cmap='gray')
 io.show()
