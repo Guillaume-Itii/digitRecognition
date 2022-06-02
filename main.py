@@ -1,11 +1,10 @@
-from typing import List
-
-from numpy import ndarray
-from skimage import io
-import numpy as np
 from math import pow
-import matplotlib.pyplot as plt
+
 import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+from skimage import io
+
 import pictCutter as pc
 
 matplotlib.rcParams["font.size"] = 18
@@ -89,11 +88,19 @@ def showBothPict(a, b):
     fig.tight_layout()
     plt.show()
 
-
+def fullShow(a):
+    fig, axes = plt.subplots(2, 4, figsize=(8, 4))
+    ax = axes.ravel()
+    for i in range(0,len(a)):
+        ax[i].imshow(a[i])
+    fig.tight_layout()
+    plt.show()
 # Compare l'image passé en paramètre avec la liste tiré de la base de donnée de chiffre
-def compareWithStandard(digit_found, digitList):
+def compareWithStandard(digit_found, digitList,debug=False):
     min_error = 1
     number_mermory = 0
+    number_mermory_list = []
+
     for i in range(0, len(digitList)):
         digit_created = resize(digit_found, digitList[i])[:, :, 0]
 
@@ -103,32 +110,54 @@ def compareWithStandard(digit_found, digitList):
         if error < min_error:
             min_error = error
             number_mermory = i
+        if error <= min_error:
+            number_mermory_list.append(i)
 
-        print("Taux d'erreur pour " + str(i) + " : " + str(error))
-        print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
-
-    print("Taux retenu : " + str(min_error))
-    print("Chiffre potentiel : " + str(number_mermory))
-
-    showBothPict(digit_found, digitList[number_mermory])
+        if debug :
+            print("Taux d'erreur pour " + str(i) + " : " + str(error))
+            print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
+    if debug :
+        print("Taux retenu : " + str(min_error))
+        print("Chiffre potentiel : " + str(number_mermory))
+        print("Autre chiffre possible : " + str(number_mermory_list))
+    # showBothPict(digit_found, digitList[number_mermory])
     return number_mermory
 
 
 # Charge la liste de digit préconstruite
 digitList = loadDigitTab()
 
+
+img_enz = io.imread('horloge2.jpg')
+img1_f_enz = img_enz.copy()
+img1_f_enz = pc.filtreRouge(img1_f_enz)
+img1_f_enz = pc.img2gray(img1_f_enz)
+img1_f_enz = pc.NB(img1_f_enz)
+img1_FH_enz = img1_f_enz.copy()
+RogHeure1_enz = pc.rognageHeure(img1_FH_enz)
+img1_FH_enz = pc.zoomIn(img1_FH_enz,2,RogHeure1_enz[0], RogHeure1_enz[1], RogHeure1_enz[2], RogHeure1_enz[3])
+img1_FHH_enz = img1_FH_enz.copy()
+digit_heure_enz = pc.decoupeChiffreHeure(img1_FHH_enz)
+
 # Transforme une image en noir et blanc
-img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+img_kit = blackWhite(filter(blackWhite(img2gray(io.imread('horloge2.jpg'))), 3))
+img1_FH_kit = img_kit.copy()
+RogHeure1_kit = pc.rognageHeure(img1_FH_kit)
+img1_FH_kit = pc.zoomIn(img1_FH_kit, 2, RogHeure1_kit[0], RogHeure1_kit[1], RogHeure1_kit[2], RogHeure1_kit[3])
+img1_FHH_kit = img1_FH_kit.copy()
+digit_heure_kit = pc.decoupeChiffreHeure(img1_FHH_kit)
 
-img1_FH = img.copy()
-RogHeure1 = pc.rognageHeure(img1_FH)
-img1_FH = pc.zoomIn(img1_FH, 2, RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
-img1_FHH = img1_FH.copy()
-
-digit_heure = pc.decoupeChiffreHeure(img1_FHH)
+fullShow(digit_heure_kit)
+fullShow(digit_heure_enz)
 
 heure_afficher = []
-for i in digit_heure:
-    heure_afficher.append(compareWithStandard(i, digitList))
+for i in digit_heure_kit:
+    heure_afficher.append(compareWithStandard(i, digitList,False))
+
+print(heure_afficher)
+
+heure_afficher = []
+for i in digit_heure_enz:
+    heure_afficher.append(compareWithStandard(i, digitList,False))
 
 print(heure_afficher)

@@ -16,15 +16,17 @@ def filtreRouge(img):
 def rognage(img):
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
-    coin1_x = coin1_y = coin2_x = coin2_y = 0
+    coin1_x = coin1_y = coin2_x = coin2_y = flag_x = flag_y = 0
     for i in range(longueur):
         for j in range(largeur):
             if img[j, i] == 255:
-                if (coin1_x or coin1_y) == 0:
-                    if coin1_x == 0:
+                if flag_x == 0 or flag_y == 0:
+                    if coin1_x == 0 and flag_x == 0:
                         coin1_x = i
-                    if coin1_y == 0:
+                        flag_x = 1
+                    if coin1_y == 0 and flag_y == 0:
                         coin1_y = j
+                        flag_y = 1
                 else:
                     if j > coin2_y:
                         coin2_y = j
@@ -40,14 +42,16 @@ def rognageHeure(img):
     coin1_x = coin1_y = coin2_x = coin2_y = 0
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
-    for i in range(500):
+    for i in range(int(0.6*longueur)):
         for j in range(largeur):
             if img[j, i] == 255:
-                if (coin1_x or coin1_y) == 0:
+                if coin1_x == 0 or coin1_y == 0:
                     if coin1_x == 0:
                         coin1_x = i
+                        flag_x = 1
                     if coin1_y == 0:
                         coin1_y = j
+                        flag_y = 1
                 else:
                     if j > coin2_y:
                         coin2_y = j
