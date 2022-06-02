@@ -91,18 +91,26 @@ def showBothPict(a, b):
 
 
 def compareWithStandard(digit_found, digitList):
+    min_error = 1
+    number_mermory = 0
     for i in range(0, len(digitList)):
         digit_created = resize(digit_found, digitList[i])[:, :, 0]
-        print(digit_created)
+        # print(digit_created)
 
         error = np.mean(digit_found != digit_created)
         percent = (1 - error) * 100
 
-        print("Taux d'erreur pour " + str(i) + " : " + str(error))
-        print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
+        if error < min_error:
+            min_error = error
+            number_mermory = i
 
-        showBothPict(digit_found, digit_created)
+        # print("Taux d'erreur pour " + str(i) + " : " + str(error))
+        # print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
 
+    print("Taux retenu : " + str(min_error))
+    print("Chiffre potentiel : " + str(number_mermory) )
+
+    showBothPict(digit_found, digitList[number_mermory])
 
 digitList = loadDigitTab()
 
