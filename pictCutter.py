@@ -8,10 +8,11 @@ def filtreRouge(img):
     for i in range(longueur):
         for j in range(largeur):
             if img[j, i, 0] > 220:
-                img[j, i, 0] =img[j, i, 1] = img[j, i, 2] = 255
+                img[j, i, 0] = img[j, i, 1] = img[j, i, 2] = 255
             else:
                 img[j, i, 0] = img[j, i, 1] = img[j, i, 2] = 0
-    return(img)
+    return (img)
+
 
 def rognage(img):
     longueur = np.size(img, 1)
@@ -36,13 +37,14 @@ def rognage(img):
                         coin1_x = i
                     if j < coin1_y:
                         coin1_y = j
-    return(coin1_x, coin1_y, coin2_x, coin2_y)
+    return (coin1_x, coin1_y, coin2_x, coin2_y)
+
 
 def rognageHeure(img):
     coin1_x = coin1_y = coin2_x = coin2_y = 0
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
-    for i in range(int(0.6*longueur)):
+    for i in range(int(0.6 * longueur)):
         for j in range(largeur):
             if img[j, i] == 255:
                 if coin1_x == 0 or coin1_y == 0:
@@ -63,11 +65,12 @@ def rognageHeure(img):
                         coin1_y = j
     return (coin1_x, coin1_y, coin2_x, coin2_y)
 
+
 def rognageReste(img):
     coin1_x = coin1_y = coin2_x = coin2_y = 0
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
-    for i in range(500, longueur,1):
+    for i in range(500, longueur, 1):
         for j in range(largeur):
             if img[j, i] == 255:
                 if (coin1_x or coin1_y) == 0:
@@ -96,6 +99,7 @@ def zoomIn(image, zoom, x1, y1, x2, y2):
     else:
         return np.kron(image, np.ones((zoom, zoom, 1))).astype(np.uint8)
 
+
 def decoupeChiffreHeure(img):
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
@@ -110,69 +114,72 @@ def decoupeChiffreHeure(img):
     # io.show()
 
     C2 = img.copy()
-    C2 = zoomIn(C2, 2, l_c, 1, (2*l_c), largeur)
+    C2 = zoomIn(C2, 2, l_c, 1, (2 * l_c), largeur)
     C2_r = rognage(C2)
     C2 = zoomIn(C2, 2, C2_r[0], C2_r[1], C2_r[2], C2_r[3])
     # io.imshow(C2)
     # io.show()
 
     C3 = img.copy()
-    C3 = zoomIn(C3, 2, 2*l_c, 1, 3*l_c, largeur)
+    C3 = zoomIn(C3, 2, 2 * l_c, 1, 3 * l_c, largeur)
     C3_r = rognage(C3)
     C3 = zoomIn(C3, 2, C3_r[0], C3_r[1], C3_r[2], C3_r[3])
     # io.imshow(C3)
     # io.show()
 
     C4 = img.copy()
-    C4 = zoomIn(C4, 2, 3*l_c, 1, longueur, largeur)
+    C4 = zoomIn(C4, 2, 3 * l_c, 1, longueur, largeur)
     C4_r = rognage(C4)
     C4 = zoomIn(C4, 2, C4_r[0], C4_r[1], C4_r[2], C4_r[3])
     # io.imshow(C4)
     # io.show()
-    digit_found_list = [C1,C2,C3,C4]
+    digit_found_list = [C1, C2, C3, C4]
     return digit_found_list
+
 
 def decoupeChiffreReste(img):
     longueur = np.size(img, 1)
     largeur = np.size(img, 0)
-    l_c = (longueur / 3)*1.05
+    l_c = (longueur / 3) * 1.05
     l_c = int(l_c)
 
     C1 = img.copy()
-    C1 = zoomIn(C1, 2, 1, 1, l_c, int(largeur/2))
+    C1 = zoomIn(C1, 2, 1, 1, l_c, int(largeur / 2))
     C1_r = rognage(C1)
     C1 = zoomIn(C1, 2, C1_r[0], C1_r[1], C1_r[2], C1_r[3])
     # io.imshow(C1)
     # io.show()
 
     C2 = img.copy()
-    C2 = zoomIn(C2, 2, l_c, 1, (2*l_c), int(largeur/2))
+    C2 = zoomIn(C2, 2, l_c, 1, (2 * l_c), int(largeur / 2))
     C2_r = rognage(C2)
     C2 = zoomIn(C2, 2, C2_r[0], C2_r[1], C2_r[2], C2_r[3])
     # io.imshow(C2)
     # io.show()
 
     C3 = img.copy()
-    C3 = zoomIn(C3, 2, 1, int(largeur/2), l_c, largeur)
+    C3 = zoomIn(C3, 2, 1, int(largeur / 2), l_c, largeur)
     C3_r = rognage(C3)
     C3 = zoomIn(C3, 2, C3_r[0], C3_r[1], C3_r[2], C3_r[3])
     # io.imshow(C3)
     # io.show()s
 
     C4 = img.copy()
-    C4 = zoomIn(C4, 2, l_c, int(largeur/2), 2*l_c, largeur)
+    C4 = zoomIn(C4, 2, l_c, int(largeur / 2), 2 * l_c, largeur)
     C4_r = rognage(C4)
     C4 = zoomIn(C4, 2, C4_r[0], C4_r[1], C4_r[2], C4_r[3])
     # io.imshow(C4)
     # io.show()
 
-def img2gray(img1) :
-    grey=np.dot(img1,[0.2125,0.7154,0.0721])
+
+def img2gray(img1):
+    grey = np.dot(img1, [0.2125, 0.7154, 0.0721])
     return grey
 
-def NB (img) :
-    img[img>=89] = 255
-    img[img<=89] = 0
+
+def NB(img):
+    img[img >= 89] = 255
+    img[img <= 89] = 0
     return img
 
 # #Image filtré rouge
