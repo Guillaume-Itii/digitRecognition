@@ -114,14 +114,14 @@ def decoupeChiffreHeure(img):
     # io.show()
 
     C2 = img.copy()
-    C2 = zoomIn(C2, 2, l_c, 1, (2 * l_c), largeur)
+    C2 = zoomIn(C2, 2, l_c, 1, int((1.9*l_c)), largeur)
     C2_r = rognage(C2)
     C2 = zoomIn(C2, 2, C2_r[0], C2_r[1], C2_r[2], C2_r[3])
     # io.imshow(C2)
     # io.show()
 
     C3 = img.copy()
-    C3 = zoomIn(C3, 2, 2 * l_c, 1, 3 * l_c, largeur)
+    C3 = zoomIn(C3, 2, int(2.15*l_c), 1, 3*l_c, largeur)
     C3_r = rognage(C3)
     C3 = zoomIn(C3, 2, C3_r[0], C3_r[1], C3_r[2], C3_r[3])
     # io.imshow(C3)
