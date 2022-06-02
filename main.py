@@ -7,7 +7,7 @@ import pictCutter as pc
 
 matplotlib.rcParams["font.size"] = 18
 
-
+# Charge dans un tableau des chiffres préconstruit dans des TXT
 def loadDigitTab():
     digitList = []
     for i in range(0, 10):
@@ -15,13 +15,6 @@ def loadDigitTab():
         # print("-----Digit : " + str(i) + "-----")
         # print(digitList[i])
     return digitList
-
-
-def imgToTxt(img, file):
-    destination = open(file + ".txt", "w")
-    for row in img:
-        np.savetxt(destination, row)
-    destination.close()
 
 
 def img2gray(img):
@@ -62,6 +55,7 @@ def getDigit(img):
     return digit
 
 
+# Redimensionne une image (digit_created) par rapport a la taille d'une autre (digit_found)
 def resize(digit_found, digit_created):
     C = digit_created
 
@@ -81,7 +75,7 @@ def resize(digit_found, digit_created):
                                        1 + int(j / yScale)]
     return newImage
 
-
+# Affiche deux images
 def showBothPict(a, b):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4))
     ax = axes.ravel()
@@ -90,16 +84,15 @@ def showBothPict(a, b):
     fig.tight_layout()
     plt.show()
 
-
+# Compare l'image passé en paramètre avec la liste tiré de la base de donnée de chiffre
 def compareWithStandard(digit_found, digitList):
     min_error = 1
     number_mermory = 0
     for i in range(0, len(digitList)):
         digit_created = resize(digit_found, digitList[i])[:, :, 0]
-        # print(digit_created)
 
         error = np.mean(digit_found != digit_created)
-        percent = (1 - error) * 100
+        # percent = (1 - error) * 100
 
         if error < min_error:
             min_error = error
@@ -113,10 +106,12 @@ def compareWithStandard(digit_found, digitList):
 
     showBothPict(digit_found, digitList[number_mermory])
 
+# Charge la liste de digit préconstruite
 digitList = loadDigitTab()
 
-# img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+# Transforme une image en noir et blanc
 img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+
 # digit_found = getDigit(img)
 for i in pc.decoupeChiffreHeure(img):
     compareWithStandard(i, digitList)
