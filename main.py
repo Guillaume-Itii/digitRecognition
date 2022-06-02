@@ -3,6 +3,7 @@ import numpy as np
 from math import pow
 import matplotlib.pyplot as plt
 import matplotlib
+import pictCutter as pc
 
 matplotlib.rcParams["font.size"] = 18
 
@@ -114,8 +115,8 @@ def compareWithStandard(digit_found, digitList):
 
 digitList = loadDigitTab()
 
+# img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
 img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
-
-digit_found = getDigit(img)
-
-compareWithStandard(digit_found, digitList)
+# digit_found = getDigit(img)
+for i in pc.decoupeChiffreHeure(img):
+    compareWithStandard(i, digitList)

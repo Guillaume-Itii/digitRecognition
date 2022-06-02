@@ -5,13 +5,13 @@ img1 = io.imread('horloge1.jpg')
 img2 = io.imread('horloge2.jpg')
 
 # detection taille image
-longueur1 = np.size(img1,1)
-largeur1 = np.size(img1,0)
-print("longueur img 1 : ", longueur1, ", largeur img2 : ", largeur1)
+# longueur1 = np.size(img1,1)
+# largeur1 = np.size(img1,0)
+# print("longueur img 1 : ", longueur1, ", largeur img2 : ", largeur1)
 
-longueur2 = np.size(img2,1)
-largeur2 = np.size(img2,0)
-print("longueur img 2 : ", longueur2, ", largeur img2 : ", largeur2)
+# longueur2 = np.size(img2,1)
+# largeur2 = np.size(img2,0)
+# print("longueur img 2 : ", longueur2, ", largeur img2 : ", largeur2)
 
 def filtreRouge(img):
     longueur = np.size(img, 1)
@@ -113,29 +113,31 @@ def decoupeChiffreHeure(img):
     C1 = zoomIn(C1, 2, 1, 1, l_c, largeur)
     C1_r = rognage(C1)
     C1 = zoomIn(C1, 2, C1_r[0], C1_r[1], C1_r[2], C1_r[3])
-    io.imshow(C1)
-    io.show()
+    # io.imshow(C1)
+    # io.show()
 
     C2 = img.copy()
     C2 = zoomIn(C2, 2, l_c, 1, (2*l_c), largeur)
     C2_r = rognage(C2)
     C2 = zoomIn(C2, 2, C2_r[0], C2_r[1], C2_r[2], C2_r[3])
-    io.imshow(C2)
-    io.show()
+    # io.imshow(C2)
+    # io.show()
 
     C3 = img.copy()
     C3 = zoomIn(C3, 2, 2*l_c, 1, 3*l_c, largeur)
     C3_r = rognage(C3)
     C3 = zoomIn(C3, 2, C3_r[0], C3_r[1], C3_r[2], C3_r[3])
-    io.imshow(C3)
-    io.show()
+    # io.imshow(C3)
+    # io.show()
 
     C4 = img.copy()
     C4 = zoomIn(C4, 2, 3*l_c, 1, longueur, largeur)
     C4_r = rognage(C4)
     C4 = zoomIn(C4, 2, C4_r[0], C4_r[1], C4_r[2], C4_r[3])
-    io.imshow(C4)
-    io.show()
+    # io.imshow(C4)
+    # io.show()
+    digit_found_list = [C1,C2,C3,C4]
+    return digit_found_list
 
 def decoupeChiffreReste(img):
     longueur = np.size(img, 1)
@@ -180,6 +182,7 @@ def NB (img) :
     img[img<=89] = 0
     return img
 
+
 # Image de base
 #io.imshow(img1)
 #io.show()
@@ -187,66 +190,66 @@ def NB (img) :
 #io.show()
 
 
-
-#Image filtré rouge
-img1_f = img1.copy()
-img1_f = filtreRouge(img1_f)
-img1_f = img2gray(img1_f)
-#io.imshow(img1_f, cmap = "gray")
-#io.show()
-img1_f = NB(img1_f)
-#io.imshow(img1_f)
-#io.show()
-
-
-img2_f = img2.copy()
-img2_f = filtreRouge(img2_f)
-img2_f = img2gray(img2_f)
-#io.imshow(img2_f)
-#io.show()
-img2_f = NB(img2_f)
-#io.imshow(img2_f)
-#io.show()
-
-
-#Test rognage heure#########################################################################################
-img1_FH = img1_f.copy()
-RogHeure1 = rognageHeure(img1_FH)
-img1_FH = zoomIn(img1_FH,2,RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
-#io.imshow(img1_FH)
-#io.show()
-
-img2_FH = img2_f.copy()
-RogHeure2 = rognageHeure(img2_FH)
-img2_FH = zoomIn(img2_FH,2,RogHeure2[0], RogHeure2[1], RogHeure2[2], RogHeure2[3])
-#io.imshow(img2_FH)
-#io.show()
-
-#Detection chiffres heure
-img1_FHH = img1_FH.copy()
-decoupeChiffreHeure(img1_FHH)
-
-img2_FHH = img2_FH.copy()
-decoupeChiffreHeure(img2_FHH)
-
-#Test rognage reste
-img1_RR = img1_f.copy()
-RogReste1 = rognageReste(img1_RR)
-print(RogReste1)
-img1_RR = zoomIn(img1_RR,2,RogReste1[0], RogReste1[1], RogReste1[2], RogReste1[3])
-io.imshow(img1_RR)
-io.show()
-
-img2_RR = img2_f.copy()
-RogReste2 = rognageReste(img2_RR)
-print(RogReste2)
-img2_RR = zoomIn(img2_RR,2,RogReste2[0], RogReste2[1], RogReste2[2], RogReste2[3])
-#io.imshow(img2_RR)
-#io.show()
-
-#Detection chiffres reste
-img1_RRR = img1_RR.copy()
-decoupeChiffreReste(img1_RRR)
-
-img2_RRR = img2_RR.copy()
-decoupeChiffreReste(img2_RRR)
+#
+# #Image filtré rouge
+# img1_f = img1.copy()
+# img1_f = filtreRouge(img1_f)
+# img1_f = img2gray(img1_f)
+# #io.imshow(img1_f, cmap = "gray")
+# #io.show()
+# img1_f = NB(img1_f)
+# #io.imshow(img1_f)
+# #io.show()
+#
+#
+# img2_f = img2.copy()
+# img2_f = filtreRouge(img2_f)
+# img2_f = img2gray(img2_f)
+# #io.imshow(img2_f)
+# #io.show()
+# img2_f = NB(img2_f)
+# #io.imshow(img2_f)
+# #io.show()
+#
+#
+# #Test rognage heure#########################################################################################
+# img1_FH = img1_f.copy()
+# RogHeure1 = rognageHeure(img1_FH)
+# img1_FH = zoomIn(img1_FH,2,RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
+# #io.imshow(img1_FH)
+# #io.show()
+#
+# img2_FH = img2_f.copy()
+# RogHeure2 = rognageHeure(img2_FH)
+# img2_FH = zoomIn(img2_FH,2,RogHeure2[0], RogHeure2[1], RogHeure2[2], RogHeure2[3])
+# #io.imshow(img2_FH)
+# #io.show()
+#
+# #Detection chiffres heure
+# img1_FHH = img1_FH.copy()
+# decoupeChiffreHeure(img1_FHH)
+#
+# img2_FHH = img2_FH.copy()
+# decoupeChiffreHeure(img2_FHH)
+#
+# #Test rognage reste
+# img1_RR = img1_f.copy()
+# RogReste1 = rognageReste(img1_RR)
+# print(RogReste1)
+# img1_RR = zoomIn(img1_RR,2,RogReste1[0], RogReste1[1], RogReste1[2], RogReste1[3])
+# io.imshow(img1_RR)
+# io.show()
+#
+# img2_RR = img2_f.copy()
+# RogReste2 = rognageReste(img2_RR)
+# print(RogReste2)
+# img2_RR = zoomIn(img2_RR,2,RogReste2[0], RogReste2[1], RogReste2[2], RogReste2[3])
+# #io.imshow(img2_RR)
+# #io.show()
+#
+# #Detection chiffres reste
+# img1_RRR = img1_RR.copy()
+# decoupeChiffreReste(img1_RRR)
+#
+# img2_RRR = img2_RR.copy()
+# decoupeChiffreReste(img2_RRR)
