@@ -92,19 +92,19 @@ def compareWithStandard(digit_found, digitList):
         digit_created = resize(digit_found, digitList[i])[:, :, 0]
 
         error = np.mean(digit_found != digit_created)
-        # percent = (1 - error) * 100
+        percent = (1 - error) * 100
 
         if error < min_error:
             min_error = error
             number_mermory = i
 
-        # print("Taux d'erreur pour " + str(i) + " : " + str(error))
-        # print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
+        print("Taux d'erreur pour " + str(i) + " : " + str(error))
+        print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
 
-    # print("Taux retenu : " + str(min_error))
-    # print("Chiffre potentiel : " + str(number_mermory) )
+    print("Taux retenu : " + str(min_error))
+    print("Chiffre potentiel : " + str(number_mermory) )
 
-    # showBothPict(digit_found, digitList[number_mermory])
+    showBothPict(digit_found, digitList[number_mermory])
     return number_mermory
 
 # Charge la liste de digit préconstruite
