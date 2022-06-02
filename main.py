@@ -7,11 +7,13 @@ from io import StringIO
 
 matplotlib.rcParams["font.size"] = 18
 
+
 def loadDigitTab():
     digitList = []
-    for i in range(0,10):
-        digitList.append(np.loadtxt('./digitDB/'+str(i)+'.txt',delimiter=','))
-    print(digitList)
+    for i in range(0, 10):
+        digitList.append(np.loadtxt('./digitDB/' + str(i) + '.txt', delimiter=','))
+        # print("-----Digit : " + str(i) + "-----")
+        # print(digitList[i])
     return digitList
 
 
@@ -60,24 +62,13 @@ def getDigit(img):
     return digit
 
 
-def resize(digit):
-    # digit_list = loadDigitTab()
-    C = np.array([[0, 0, 0, 0, 0, 0, 0],  # 2
-                  [0, 255, 255, 255, 255, 255, 0],
-                  [0, 0, 0, 0, 0, 255, 0],
-                  [0, 0, 0, 0, 0, 255, 0],
-                  [0, 0, 0, 0, 0, 255, 0],
-                  [0, 255, 255, 255, 255, 255, 0],
-                  [0, 255, 0, 0, 0, 0, 0],
-                  [0, 255, 0, 0, 0, 0, 0],
-                  [0, 255, 0, 0, 0, 0, 0],
-                  [0, 255, 255, 255, 255, 255, 0],
-                  [0, 0, 0, 0, 0, 0, 0]])
-    # determining the length of original image
+def resize(digit_found, digit_created):
+    C = digit_created
+
     w, h = C.shape[:2];
 
-    xNew = np.shape(digit)[0];
-    yNew = np.shape(digit)[1];
+    xNew = np.shape(digit_found)[0];
+    yNew = np.shape(digit_found)[1];
 
     xScale = xNew / (w - 1);
     yScale = yNew / (h - 1);
@@ -90,22 +81,34 @@ def resize(digit):
                                        1 + int(j / yScale)]
     return newImage
 
-loadDigitTab()
+
+def showBothPict(a,b):
+    fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+    ax = axes.ravel()
+    ax[0].imshow(a)
+    ax[1].imshow(b)
+    fig.tight_layout()
+    plt.show()
+
+def compareWithStandard(digit_found, digitList):
+    for i in range(0, len(digitList)):
+        digit_created = resize(digit_found,digitList[i])[:, :, 0]
+        print(digit_created)
+
+        error = np.mean(digit_found != digit_created)
+        percent = (1-error)*100
+
+        print("Taux d'erreur pour "+ str(i) +" : " + str(error) )
+        print("Taux de ressemblance pour "+ str(i) +" : " + str(percent) )
+
+        showBothPict(digit_found,digit_created)
+
+
+
+digitList = loadDigitTab()
 
 img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+
 digit_found = getDigit(img)
-digit_created = resize(digit_found)[:, :, 0]
 
-error = np.mean(digit_found != digit_created)
-precent = (1 - error) * 100
-
-print("error : " + str(error))
-print("right % : " + str(precent))
-
-fig, axes = plt.subplots(1, 2, figsize=(8, 4))
-ax = axes.ravel()
-ax[0].imshow(digit_found)
-ax[1].imshow(digit_created)
-
-fig.tight_layout()
-plt.show()
+compareWithStandard(digit_found, digitList)
