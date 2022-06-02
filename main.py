@@ -3,7 +3,6 @@ import numpy as np
 from math import pow
 import matplotlib.pyplot as plt
 import matplotlib
-from io import StringIO
 
 matplotlib.rcParams["font.size"] = 18
 
@@ -65,15 +64,15 @@ def getDigit(img):
 def resize(digit_found, digit_created):
     C = digit_created
 
-    w, h = C.shape[:2];
+    w, h = C.shape[:2]
 
-    xNew = np.shape(digit_found)[0];
-    yNew = np.shape(digit_found)[1];
+    xNew = np.shape(digit_found)[0]
+    yNew = np.shape(digit_found)[1]
 
-    xScale = xNew / (w - 1);
-    yScale = yNew / (h - 1);
+    xScale = xNew / (w - 1)
+    yScale = yNew / (h - 1)
 
-    newImage = np.zeros([xNew, yNew, 1]);
+    newImage = np.zeros([xNew, yNew, 1])
 
     for i in range(xNew - 1):
         for j in range(yNew - 1):
@@ -82,7 +81,7 @@ def resize(digit_found, digit_created):
     return newImage
 
 
-def showBothPict(a,b):
+def showBothPict(a, b):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4))
     ax = axes.ravel()
     ax[0].imshow(a)
@@ -90,19 +89,19 @@ def showBothPict(a,b):
     fig.tight_layout()
     plt.show()
 
+
 def compareWithStandard(digit_found, digitList):
     for i in range(0, len(digitList)):
-        digit_created = resize(digit_found,digitList[i])[:, :, 0]
+        digit_created = resize(digit_found, digitList[i])[:, :, 0]
         print(digit_created)
 
         error = np.mean(digit_found != digit_created)
-        percent = (1-error)*100
+        percent = (1 - error) * 100
 
-        print("Taux d'erreur pour "+ str(i) +" : " + str(error) )
-        print("Taux de ressemblance pour "+ str(i) +" : " + str(percent) )
+        print("Taux d'erreur pour " + str(i) + " : " + str(error))
+        print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
 
-        showBothPict(digit_found,digit_created)
-
+        showBothPict(digit_found, digit_created)
 
 
 digitList = loadDigitTab()
