@@ -101,10 +101,11 @@ def compareWithStandard(digit_found, digitList):
         # print("Taux d'erreur pour " + str(i) + " : " + str(error))
         # print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
 
-    print("Taux retenu : " + str(min_error))
-    print("Chiffre potentiel : " + str(number_mermory) )
+    # print("Taux retenu : " + str(min_error))
+    # print("Chiffre potentiel : " + str(number_mermory) )
 
-    showBothPict(digit_found, digitList[number_mermory])
+    # showBothPict(digit_found, digitList[number_mermory])
+    return number_mermory
 
 # Charge la liste de digit préconstruite
 digitList = loadDigitTab()
@@ -118,5 +119,9 @@ img1_FH = pc.zoomIn(img1_FH,2,RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure
 img1_FHH = img1_FH.copy()
 
 digit_heure = pc.decoupeChiffreHeure(img1_FHH)
+
+heure_afficher = []
 for i in digit_heure:
-    compareWithStandard(i, digitList)
+    heure_afficher.append( compareWithStandard(i, digitList) )
+
+print(heure_afficher)
