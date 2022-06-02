@@ -1,3 +1,6 @@
+from typing import List
+
+from numpy import ndarray
 from skimage import io
 import numpy as np
 from math import pow
@@ -7,14 +10,15 @@ import pictCutter as pc
 
 matplotlib.rcParams["font.size"] = 18
 
+
 # Charge dans un tableau des chiffres préconstruit dans des TXT
 def loadDigitTab():
-    digitList = []
+    digit_list = []
     for i in range(0, 10):
-        digitList.append(np.loadtxt('./digitDB/' + str(i) + '.txt', delimiter=','))
+        digit_list.append(np.loadtxt('./digitDB/' + str(i) + '.txt', delimiter=','))
         # print("-----Digit : " + str(i) + "-----")
         # print(digitList[i])
-    return digitList
+    return digit_list
 
 
 def img2gray(img):
@@ -75,6 +79,7 @@ def resize(digit_found, digit_created):
                                        1 + int(j / yScale)]
     return newImage
 
+
 # Affiche deux images
 def showBothPict(a, b):
     fig, axes = plt.subplots(1, 2, figsize=(8, 4))
@@ -83,6 +88,7 @@ def showBothPict(a, b):
     ax[1].imshow(b)
     fig.tight_layout()
     plt.show()
+
 
 # Compare l'image passé en paramètre avec la liste tiré de la base de donnée de chiffre
 def compareWithStandard(digit_found, digitList):
@@ -102,10 +108,11 @@ def compareWithStandard(digit_found, digitList):
         print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
 
     print("Taux retenu : " + str(min_error))
-    print("Chiffre potentiel : " + str(number_mermory) )
+    print("Chiffre potentiel : " + str(number_mermory))
 
     showBothPict(digit_found, digitList[number_mermory])
     return number_mermory
+
 
 # Charge la liste de digit préconstruite
 digitList = loadDigitTab()
@@ -115,13 +122,13 @@ img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
 
 img1_FH = img.copy()
 RogHeure1 = pc.rognageHeure(img1_FH)
-img1_FH = pc.zoomIn(img1_FH,2,RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
+img1_FH = pc.zoomIn(img1_FH, 2, RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
 img1_FHH = img1_FH.copy()
 
 digit_heure = pc.decoupeChiffreHeure(img1_FHH)
 
 heure_afficher = []
 for i in digit_heure:
-    heure_afficher.append( compareWithStandard(i, digitList) )
+    heure_afficher.append(compareWithStandard(i, digitList))
 
 print(heure_afficher)
