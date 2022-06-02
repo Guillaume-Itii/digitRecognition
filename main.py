@@ -120,7 +120,7 @@ def compareWithStandard(digit_found, digitList,debug=False):
         print("Taux retenu : " + str(min_error))
         print("Chiffre potentiel : " + str(number_mermory))
         print("Autre chiffre possible : " + str(number_mermory_list))
-    # showBothPict(digit_found, digitList[number_mermory])
+        showBothPict(digit_found, digitList[number_mermory])
     return number_mermory
 
 
@@ -140,7 +140,7 @@ img1_FHH_enz = img1_FH_enz.copy()
 digit_heure_enz = pc.decoupeChiffreHeure(img1_FHH_enz)
 
 # Transforme une image en noir et blanc
-img_kit = blackWhite(filter(blackWhite(img2gray(io.imread('horloge2.jpg'))), 3))
+img_kit = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
 img1_FH_kit = img_kit.copy()
 RogHeure1_kit = pc.rognageHeure(img1_FH_kit)
 img1_FH_kit = pc.zoomIn(img1_FH_kit, 2, RogHeure1_kit[0], RogHeure1_kit[1], RogHeure1_kit[2], RogHeure1_kit[3])
@@ -152,7 +152,7 @@ fullShow(digit_heure_enz)
 
 heure_afficher = []
 for i in digit_heure_kit:
-    heure_afficher.append(compareWithStandard(i, digitList,False))
+    heure_afficher.append(compareWithStandard(i, digitList,True))
 
 print(heure_afficher)
 
