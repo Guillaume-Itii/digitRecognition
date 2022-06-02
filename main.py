@@ -110,8 +110,20 @@ def compareWithStandard(digit_found, digitList):
 digitList = loadDigitTab()
 
 # Transforme une image en noir et blanc
-img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
+# img = blackWhite(filter(blackWhite(img2gray(io.imread('horloge1.jpg'))), 3))
 
 # digit_found = getDigit(img)
-for i in pc.decoupeChiffreHeure(img):
+img = io.imread('horloge1.jpg')
+# io.show()
+img1_f = img.copy()
+img1_f = pc.filtreRouge(img1_f)
+img1_f = pc.img2gray(img1_f)
+img1_f = pc.NB(img1_f)
+img1_FH = img1_f.copy()
+RogHeure1 = pc.rognageHeure(img1_FH)
+img1_FH = pc.zoomIn(img1_FH,2,RogHeure1[0], RogHeure1[1], RogHeure1[2], RogHeure1[3])
+img1_FHH = img1_FH.copy()
+
+digit_heure = pc.decoupeChiffreHeure(img1_FHH)
+for i in digit_heure:
     compareWithStandard(i, digitList)

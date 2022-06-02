@@ -1,17 +1,6 @@
 from skimage import io
 import numpy as np
 
-img1 = io.imread('horloge1.jpg')
-img2 = io.imread('horloge2.jpg')
-
-# detection taille image
-# longueur1 = np.size(img1,1)
-# largeur1 = np.size(img1,0)
-# print("longueur img 1 : ", longueur1, ", largeur img2 : ", largeur1)
-
-# longueur2 = np.size(img2,1)
-# largeur2 = np.size(img2,0)
-# print("longueur img 2 : ", longueur2, ", largeur img2 : ", largeur2)
 
 def filtreRouge(img):
     longueur = np.size(img, 1)
@@ -149,29 +138,29 @@ def decoupeChiffreReste(img):
     C1 = zoomIn(C1, 2, 1, 1, l_c, int(largeur/2))
     C1_r = rognage(C1)
     C1 = zoomIn(C1, 2, C1_r[0], C1_r[1], C1_r[2], C1_r[3])
-    io.imshow(C1)
-    io.show()
+    # io.imshow(C1)
+    # io.show()
 
     C2 = img.copy()
     C2 = zoomIn(C2, 2, l_c, 1, (2*l_c), int(largeur/2))
     C2_r = rognage(C2)
     C2 = zoomIn(C2, 2, C2_r[0], C2_r[1], C2_r[2], C2_r[3])
-    io.imshow(C2)
-    io.show()
+    # io.imshow(C2)
+    # io.show()
 
     C3 = img.copy()
     C3 = zoomIn(C3, 2, 1, int(largeur/2), l_c, largeur)
     C3_r = rognage(C3)
     C3 = zoomIn(C3, 2, C3_r[0], C3_r[1], C3_r[2], C3_r[3])
-    io.imshow(C3)
-    io.show()
+    # io.imshow(C3)
+    # io.show()s
 
     C4 = img.copy()
     C4 = zoomIn(C4, 2, l_c, int(largeur/2), 2*l_c, largeur)
     C4_r = rognage(C4)
     C4 = zoomIn(C4, 2, C4_r[0], C4_r[1], C4_r[2], C4_r[3])
-    io.imshow(C4)
-    io.show()
+    # io.imshow(C4)
+    # io.show()
 
 def img2gray(img1) :
     grey=np.dot(img1,[0.2125,0.7154,0.0721])
@@ -182,15 +171,6 @@ def NB (img) :
     img[img<=89] = 0
     return img
 
-
-# Image de base
-#io.imshow(img1)
-#io.show()
-#io.imshow(img2)
-#io.show()
-
-
-#
 # #Image filtré rouge
 # img1_f = img1.copy()
 # img1_f = filtreRouge(img1_f)
