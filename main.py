@@ -88,15 +88,28 @@ def showBothPict(a, b):
     fig.tight_layout()
     plt.show()
 
-def fullShow(a):
+
+def fullShow(a, b):
     fig, axes = plt.subplots(2, 4, figsize=(8, 4))
     ax = axes.ravel()
-    for i in range(0,len(a)):
-        ax[i].imshow(a[i])
+    c = a + b
+    for i in range(0, len(c)):
+        ax[i].imshow(c[i])
+
     fig.tight_layout()
     plt.show()
+
+
+def intToPict(a, b):
+    c = []
+    # Récupére les images trouvés dans un tableau
+    for i in a:
+        c.append(b[i])
+    return c
+
+
 # Compare l'image passé en paramètre avec la liste tiré de la base de donnée de chiffre
-def compareWithStandard(digit_found, digitList,debug=False):
+def compareWithStandard(digit_found, digitList, debug=False):
     min_error = 1
     number_mermory = 0
     number_mermory_list = []
@@ -113,10 +126,10 @@ def compareWithStandard(digit_found, digitList,debug=False):
         if error <= min_error:
             number_mermory_list.append(i)
 
-        if debug :
+        if debug:
             print("Taux d'erreur pour " + str(i) + " : " + str(error))
             print("Taux de ressemblance pour " + str(i) + " : " + str(percent))
-    if debug :
+    if debug:
         print("Taux retenu : " + str(min_error))
         print("Chiffre potentiel : " + str(number_mermory))
         print("Autre chiffre possible : " + str(number_mermory_list))
@@ -127,7 +140,6 @@ def compareWithStandard(digit_found, digitList,debug=False):
 # Charge la liste de digit préconstruite
 digitList = loadDigitTab()
 
-
 img_enz = io.imread('horloge2.jpg')
 img1_f_enz = img_enz.copy()
 img1_f_enz = pc.filtreRouge(img1_f_enz)
@@ -135,7 +147,7 @@ img1_f_enz = pc.img2gray(img1_f_enz)
 img1_f_enz = pc.NB(img1_f_enz)
 img1_FH_enz = img1_f_enz.copy()
 RogHeure1_enz = pc.rognageHeure(img1_FH_enz)
-img1_FH_enz = pc.zoomIn(img1_FH_enz,2,RogHeure1_enz[0], RogHeure1_enz[1], RogHeure1_enz[2], RogHeure1_enz[3])
+img1_FH_enz = pc.zoomIn(img1_FH_enz, 2, RogHeure1_enz[0], RogHeure1_enz[1], RogHeure1_enz[2], RogHeure1_enz[3])
 img1_FHH_enz = img1_FH_enz.copy()
 digit_heure_enz = pc.decoupeChiffreHeure(img1_FHH_enz)
 
@@ -147,17 +159,21 @@ img1_FH_kit = pc.zoomIn(img1_FH_kit, 2, RogHeure1_kit[0], RogHeure1_kit[1], RogH
 img1_FHH_kit = img1_FH_kit.copy()
 digit_heure_kit = pc.decoupeChiffreHeure(img1_FHH_kit)
 
-fullShow(digit_heure_kit)
-fullShow(digit_heure_enz)
+# fullShow(digit_heure_enz)
 
 heure_afficher = []
 for i in digit_heure_kit:
-    heure_afficher.append(compareWithStandard(i, digitList,True))
+    heure_afficher.append(compareWithStandard(i, digitList, True))
+
 
 print(heure_afficher)
 
+heure_trouver_img = intToPict(heure_afficher, digitList)
+fullShow(digit_heure_kit, heure_trouver_img)
+
+
 heure_afficher = []
 for i in digit_heure_enz:
-    heure_afficher.append(compareWithStandard(i, digitList,False))
+    heure_afficher.append(compareWithStandard(i, digitList, False))
 
 print(heure_afficher)
